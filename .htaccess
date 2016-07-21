@@ -4,5 +4,9 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
 
+    RewriteRule ^formulario/([0-9]+)/?$ formulario.php?id=$1
+    RewriteRule ^formulario/?$ formulario.php
+    RewriteRule ^carros/([0-9]+)/?$ carros.php?id=$1
+    RewriteRule ^carros/?$ carros.php
     # RewriteRule
 </IfModule>
