@@ -11,19 +11,34 @@ namespace controllers {
 		}
 		
 		//Select
-		public function select($id = null){
+		public function select($search = null){
 			global $app;
-			if($id <> null)
-			{
-				$sth = $this->PDO->prepare("SELECT * FROM pessoa WHERE id = :id");
-				$sth ->bindValue(':id',$id);
-			}
-			else 
+						
+			//Select all if search is null
+			if($search == null)
 			{
 				$sth = $this->PDO->prepare("SELECT * FROM pessoa");
 			}
-			$sth->execute();
-			$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+			else 
+			{
+				if(isset($_GET['id']))
+				{
+					//Select by ID
+					$sth = $this->PDO->prepare("SELECT * FROM pessoa WHERE id = :id");
+					$sth ->bindValue(':id',($_GET['id']));					
+				}
+				else if (isset($_GET['nome']))
+				{
+					//Select by Name
+					$sth = $this->PDO->prepare("SELECT * FROM pessoa WHERE nome like :nome");
+					$sth ->bindValue(':nome','%'.($_GET['nome']).'%');
+				}
+			}
+			if($sth !== "")
+			{
+				$sth->execute();
+				$result = $sth->fetchAll(\PDO::FETCH_ASSOC);				
+			}
 			//Return data
 			$app->render('default.php',["data"=>$result],200);
 		}
