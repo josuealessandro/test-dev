@@ -27,7 +27,7 @@ function BuscarCarro(str) {
                 document.getElementById("txtBuscaCarro").innerHTML = content;
             }
         };
-        xmlhttp.open("GET", "api.php/carros/search?marca=" + str + '&modelo=' str, true);
+        xmlhttp.open("GET", "api.php/carros/search?marca=" + str + "&modelo=" + str, true);
         xmlhttp.send();
     }
 }
