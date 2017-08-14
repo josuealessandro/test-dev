@@ -51,15 +51,17 @@
 		</nav>
 		<div class="container">
 			<div class="starter-template">
-				<form>
+				
 					<div class="divBuscar">
 						<label>Faça sua busca:</label><br />
 						<input type="text" placeholder="Digite a Marca ou Modelo" id="txtBusca" onkeyup="BuscarCarro(this.value)" />
-						<input type="button" id="btnBusca" value="Buscar" onclick="CopiarConteudo(txtBuscaCarro, divResultado)" /><br /><br /><br />		
-						<span id="txtBuscaCarro"></span>
+						<input type="button" id="btnBusca" value="Buscar" onclick="CopiarConteudo(txtBuscaCarro, divResultado)" /> 		
+						<input type="button" id="btnAdicionarCampo" value="Adicionar" onclick="AdicionarCampo(divAdicionarCampo)" /><br /><br /><br />		
+						<div id="txtBuscaCarro"></div>
 						<div id="divResultado"></div>
+						<div id="divAdicionarCampo"></div>
 					</div>
-				</form>
+				
 			</div>
 		</div>
 		
