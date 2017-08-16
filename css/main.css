@@ -25,10 +25,13 @@ body {
 .js-add_input, .js-edit_input {
     width: 20%;
     margin-right: 5px;
+    min-width: 100px;
 }
+
 .js-add_div {
-    margin-bottom: 5px;
+    margin: 15px;
 }
+
 .js_button {
     margin-right: 5px;
 }
@@ -46,7 +49,7 @@ body {
     display: none;
 }
 
-.sugestao-busca {
+#chave-busca {
     font-weight: bold;
     font-size: 13px;
     text-align: left;
@@ -63,6 +66,28 @@ body {
     padding-bottom: 10px;
 }
 
-    .divChaveBusca span:last-child {
-        font-weight: bold;
-    }
+.js-edit_input {
+    text-align: center;
+}
+
+#coneudoResultado td {
+    width: 150px;
+}
+
+.input-group .form-control {
+    width: 70% !important;
+    margin-right: 5px;
+}
+
+.input-group {
+    display: ruby;
+    white-space: pre-line;
+}
+
+#divAdicionarCampo {
+    margin: 30px auto 30px auto;
+}
+
+#btnLimparFiltro {
+    display: none;
+}

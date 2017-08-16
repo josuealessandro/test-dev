@@ -1,9 +1,17 @@
-$(document).ready(function () { });
-    
+$(document).ready(function () {
+    $('.search-panel .dropdown-menu').find('a').click(function (e) {
+        e.preventDefault();
+        var param = $(this).attr("href").replace("#", "");
+        var concept = $(this).text();
+        $('.search-panel span#search_concept').text(concept);
+        $('.input-group #search_param').val(param);
+    });
+});
+
 //Buscar
 //========================================================================
-function BuscarCarro(str) {
-    if (str == "") {
+function BuscarCarro(chave_busca, filtro) {
+    if (chave_busca == "") {
         document.getElementById("chave-busca").innerHTML = "";
         document.getElementById("coneudoResultado").innerHTML = "";
         return;
@@ -26,15 +34,15 @@ function BuscarCarro(str) {
 
                 //Se retornar com resultado
                 if (arrayResult.length !== 0) {
-                    //Pega cada resultado e monta o html para exibicao
+                    //Pega cada resultado e monta o html basico para exibicao
                     $.each(arrayResult, function (i, item) {
                         content += '<tr>'
                             + '<th scope="row">' + item.ID_CARRO + '</th>'
                             + '<td>' + item.NOME_MARCA + '</td>'
                             + '<td>' + item.NOME_MODELO + '</td>'
                             + '<td>' + item.ANO + '</td>'
-                            + '<td style="text-align: right;"><input id="btnExcluir" value="Excluir" onclick="ExcluirCarro(this)" class="js_input btn btn-outline-danger" type="button" /></td>'
-                            + '<td style="text-align: left;"><input id="btnEditar" value="Editar" onclick="EditarCarro(this)" class="js_input btn btn-outline-info" type="button" /></td>'
+                            + '<td style="text-align: right;"><input id="btnExcluir_' + item.ID_CARRO + '" value="Excluir" onclick="ExcluirCarro(this)" class="js_input btn btn-outline-danger" type="button" /></td>'
+                            + '<td style="text-align: left;"><input id="btnEditar_' + item.ID_CARRO + '" value="Editar" onclick="EditarCarro(this)" class="js_input btn btn-outline-info" type="button" /></td>'
                             + '</tr>'
                     });
                 } else {
@@ -42,12 +50,68 @@ function BuscarCarro(str) {
                 }
 
                 document.getElementById("coneudoResultado").innerHTML = content;
-                document.getElementById("chave-busca").innerHTML = str;
+                document.getElementById("chave-busca").innerHTML = chave_busca;
+
             }
         };
         //Envia a requisicao, buscando a palavra chave tanto no campo 'marca' quanto no campo 'modelo'
         //Traz o resultado por ordem alfabetica da marca
-        xmlhttp.open("GET", "api.php/carros/search?marca=" + str + "&modelo=" + str + "&orderby=marca", true);
+        xmlhttp.open("GET", "api.php/carros/search?marca=" + chave_busca + "&modelo=" + chave_busca + "&orderby=marca", true);
+        xmlhttp.send();
+        //var strURLBusca = "";
+        //var tipo = "";
+        //var order = "";
+
+        ////Processa os filtros de busca
+        //if (filtro !== "") {
+        //    strURLBusca = "search?";
+        //    var jsonFiltro = (filtro);
+        //    tipo = jsonFiltro.tipo.toLowerCase();
+        //    order = jsonFiltro.asc; //variavel booleana: true = asc / false = desc
+        //    if (order == "")
+        //        order = "true";
+        //}
+        //else if (getCookie("filtroTipo") !== "") {
+        //    strURLBusca = "search?";
+        //    tipo = getCookie("filtroTipo");
+        //    order = getCookie("asc"); //variavel booleana: true = asc / false = desc
+        //    if (order == "")
+        //        order = "true";
+        //}
+
+        //if (tipo !== "") {
+        //    switch (tipo) {
+        //        case "marca":
+        //            strURLBusca += "marca=" + chave_busca + "&orderby=marca&asc=" + order;
+        //            break;
+        //        case "modelo":
+        //            strURLBusca += "modelo=" + chave_busca + "&orderby=modelo&asc=" + order;
+        //            break;
+        //        case "ano":
+        //            strURLBusca += "ano=" + chave_busca + "&orderby=ano&asc=" + order;
+        //            break;
+        //        case "tudo":
+        //            strURLBusca += "marca=" + chave_busca + "&modelo=" + chave_busca + "&ano=" + chave_busca + "&orderby=" + order;
+        //            break;
+        //        default:
+        //            strURLBusca += "marca=" + chave_busca + "&modelo=" + chave_busca + "&ano=" + chave_busca + "&orderby=" + order;
+        //            break;
+        //    }
+        //}
+        //else {
+        //    strURLBusca = "";
+        //}
+
+
+        //Abre requisicao de busca
+        if (strURLBusca !== "") {
+            xmlhttp.open("GET", "api.php/carros/" + strURLBusca, true);
+        }
+        else {
+            xmlhttp.open("GET", "api.php/carros/", true);
+        }
+
+        //Envia requisicao de busca
         xmlhttp.send();
     }
 }
@@ -67,11 +131,16 @@ function ExcluirCarro(sender) {
                 // code for IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-            //Remove o elemento html
-            var item = sender.parentNode;
-            var pai = item.parentNode;
-            pai.removeChild(item);
-            var id = item.id.substring(item.id.indexOf("_") + 1, item.id.length);
+
+            //Pega o ID do carro
+            var id = sender.id.substring(sender.id.indexOf("_") + 1, sender.id.length);
+
+            //filho é a <tr>
+            var filho = sender.parentNode.parentNode;
+
+            //pai é a <tbody>
+            var pai = document.getElementById("coneudoResultado");
+            pai.removeChild(filho);
 
             //Envia a requisicao para remover do banco de dados
             xmlhttp.open("DELETE", "api.php/carros/id=" + id, true);
@@ -98,39 +167,44 @@ function EditarCarro(sender) {
             // code for IE6, IE5
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        var item = sender.parentNode;
-        var id = item.id.substring(item.id.indexOf("_") + 1, item.id.length);
+        var trPai = sender.parentNode.parentNode;
+        var id = sender.id.substring(sender.id.indexOf("_") + 1, sender.id.length);
 
-        //Usuario ainda nao alterou. Precisa transformar o span em input para ele poder alterar
-        if (item.children[0].tagName.toLowerCase() == "th") {
+        //Usuario ainda nao alterou os dados. Precisa inserir um input para ele poder alterar
+        if (trPai.children[1].innerHTML.toLowerCase().indexOf("input") == -1) { //-1 significa que nao ha input
+
             //Resgata os valores da tela
-            var marca = item.children[0].innerHTML;
-            var modelo = item.children[1].innerHTML;
-            var ano = item.children[2].innerHTML;
+            var marca = trPai.children[1].innerHTML;
+            var modelo = trPai.children[2].innerHTML;
+            var ano = trPai.children[3].innerHTML;
 
-            //transforma o span em input
-            $("#" + item.children[0].id).replaceWith("<input type=\"text\" class='js-edit_input form-control' id=\"marca_" + id + "\" value=\"" + marca + "\" />");
-            $("#" + item.children[1].id).replaceWith("<input type=\"text\" class='js-edit_input form-control' id=\"modelo_" + id + "\" value=\"" + modelo + "\" />");
-            $("#" + item.children[2].id).replaceWith("<input type=\"text\" class='js-edit_input form-control' id=\"ano_" + id + "\" value=\"" + ano + "\" />");
+            //Insere o input
+            $(trPai.children[1]).replaceWith("<td><input type=\"text\" class='js-edit_input form-control' id=\"marca_" + id + "\" value=\"" + marca + "\" /></td>");
+            $(trPai.children[2]).replaceWith("<td><input type=\"text\" class='js-edit_input form-control' id=\"modelo_" + id + "\" value=\"" + modelo + "\" /></td>");
+            $(trPai.children[3]).replaceWith("<td><input type=\"text\" class='js-edit_input form-control' id=\"ano_" + id + "\" value=\"" + ano + "\" /></td>");
+
+            sender.className = "js_input btn btn-success";
+            sender.value = "Salvar";
         }
-        //O usuario ja alterou, entao pode enviar a requisicao
-        else if (item.children[0].tagName.toLowerCase() == "input") {
+        //O usuario ja alterou os dados, entao pode enviar a requisicao para o banco
+        else if (trPai.children[1].innerHTML.toLowerCase().indexOf("input") != -1) {
+
             //Resgata os valores da tela
-            var marca = item.children[0].value;
-            var modelo = item.children[1].value;
-            var ano = item.children[2].value;
+            var marca = trPai.children[1].children[0].value;
+            var modelo = trPai.children[2].children[0].value;
+            var ano = trPai.children[3].children[0].value;
 
             //Envia a requisicao para alterar no banco de dados
             xmlhttp.open("PUT", "api.php/carros/id=" + id, true);
-            xmlhttp.send("{\"NOME_MARCA\":\"" + marca
-                + "\",\"NOME_MODELO\":\"" + modelo
-                + "\",\"ANO\":\"" + ano + "\"}");
+            xmlhttp.send("{\"NOME_MARCA\":\"" + marca + "\",\"NOME_MODELO\":\"" + modelo + "\",\"ANO\":\"" + ano + "\"}");
 
-            //transforma o input em span
-            $("#" + item.children[0].id).replaceWith("<span class='js_span' id=\"marca_\"" + id + ">" + marca + "</span>");
-            $("#" + item.children[1].id).replaceWith("<span class='js_span' id=\"modelo_\"" + id + ">" + modelo + "</span>");
-            $("#" + item.children[2].id).replaceWith("<span class='js_span' id=\"ano_\"" + id + ">" + ano + "</span>");
+            //Retira o input
+            $(trPai.children[1]).replaceWith("<td>" + marca + "</td>");
+            $(trPai.children[2]).replaceWith("<td>" + modelo + "</td>");
+            $(trPai.children[3]).replaceWith("<td>" + ano + "</td>");
 
+            sender.className = "js_input btn btn-outline-info";
+            sender.value = "Editar";
         }
         //atualizar na tela
 
@@ -173,7 +247,7 @@ function AdicionarCampo(sender) {
     btnAdicionar.className = "js_button btn btn-outline-success";
     btnAdicionar.id = "btnAdicionar" + Math.floor(Math.random() * 50) + 1;
     divPai.appendChild(btnAdicionar);
-    $("#"+btnAdicionar.id).click(function () {
+    $("#" + btnAdicionar.id).click(function () {
         AdicionarCarro(this);
     });
 
@@ -183,14 +257,13 @@ function AdicionarCampo(sender) {
     btnCancelar.className = "js_button btn btn-outline-secondary";
     btnCancelar.id = "btnCancelar" + Math.floor(Math.random() * 50) + 1;
     divPai.appendChild(btnCancelar);
-    $("#"+btnCancelar.id).click(function () {
+    $("#" + btnCancelar.id).click(function () {
         destino.removeChild(divPai);
     });
 
     var quebraLinha = document.createElement('br');
     divPai.appendChild(quebraLinha);
 }
-
 
 function AdicionarCarro(sender) {
     if (sender == "") {
@@ -219,13 +292,14 @@ function AdicionarCarro(sender) {
         var pai = item.parentNode;
         pai.removeChild(item);
         setTimeout(function () {
-            BuscarCarro(marca);
+            BuscarCarro(marca, "");
         }, 1000);
     }
 }
 //========================================================================
 
-//Metodo utilizado para copiar o resultado da busca, que e dinamico, e colocar em outro local da tela, para 'guarda-lo'
+//Funções de apoio
+//========================================================================
 function CopiarConteudo(IdOrigem, IdDestino) {
     var origem = document.getElementById(IdOrigem.id);
     var destino = document.getElementById(IdDestino.id);
@@ -235,3 +309,58 @@ function CopiarConteudo(IdOrigem, IdDestino) {
         origem.innerHTML = "";
     }
 }
+
+function LimparFiltro() {
+    var chave_busca = "";
+    BuscarCarro(chave_busca, "");
+    document.getElementById("txtBusca").value = "";
+}
+
+//function ProcessaFiltro(sender) {
+
+//    //Pega o que esta na barra de busca
+//    var chave_busca = document.getElementById("txtBusca").value;
+//    var filtro = "";
+
+//    //Verifica qual o filtro escolhido e monta um json
+//    switch (sender.id) {
+//        case "filtroMarca":
+//            filtro = { "tipo": "marca", "asc": "true" };
+//            break;
+//        case "filtroModelo":
+//            filtro = { "tipo": "modelo", "asc": "true" };
+//            break;
+//        case "filtroAno":
+//            filtro = { "tipo": "ano", "asc": "true" };
+//            break;
+//        case "filtroTudo":
+//            filtro = { "tipo": "tudo", "asc": "true" };
+//            break;
+//        default:
+//            filtro = { "tipo": "tudo", "asc": "true" };
+//            break;
+//    }
+
+//    if (filtro !== "") {
+//        document.cookie = "filtroTipo=" + filtro.tipo;
+//        document.cookie = "filtroAsc=" + filtro.asc;
+//        BuscarCarro(chave_busca, filtro);
+//    }
+//}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+//========================================================================

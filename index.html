@@ -51,11 +51,26 @@
     <div class="container">
         <div class="starter-template">
             <div class="divBuscar">
-                <input type="text" class="form-control" placeholder="Digite a Marca ou Modelo" id="txtBusca" onkeyup="BuscarCarro(this.value, false)" />
-                <input type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary" id="btnAdicionarCampo" value="Adicionar" onclick="AdicionarCampo(divAdicionarCampo)" /><br /><br /><br />
+                <div class="input-group">
+                    <div class="input-group-btn search-panel">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" onclick="ProcessaFiltro(this)" id="filtroTudo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span id="search_concept">Filtros</span> <span class="caret"></span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" id="filtroMarca" onclick="ProcessaFiltro(this)" href="#marca">Marca</a>
+                            <a class="dropdown-item" id="filtroModelo" onclick="ProcessaFiltro(this)" href="#modelo">Modelo</a>
+                            <a class="dropdown-item" id="filtroAno" onclick="ProcessaFiltro(this)" href="#ano">Ano</a>
+                            <div role="separator" class="dropdown-divider"></div>
+                            <a class="dropdown-item" id="filtroTudo" onclick="ProcessaFiltro(this)" href="#tudo">Tudo</a>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Digite a Marca ou Modelo" id="txtBusca" onkeyup="BuscarCarro(this.value, '')" />
+                    <input type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary" id="btnAdicionarCampo" value="Adicionar" onclick="AdicionarCampo(divAdicionarCampo)" /><br /><br /><br />
+                </div>
                 <div id="divAdicionarCampo"></div>
                 <div class="divChaveBusca">
                     <span>Busca Realizada:</span>&nbsp;<span id="chave-busca"></span>
+                    <button id="btnLimparFiltro" onclick="LimparFiltro()">Limpar Filtro</button>
                 </div>
                 <div id="divResultado">
                     <table class="table table-striped">
