@@ -6,7 +6,7 @@ namespace controllers {
 
 		//DB Connection
 		function __construct(){
-			$this->PDO = new \PDO('mysql:host=localhost;dbname=db.carro', 'root', '');
+			$this->PDO = new \PDO('mysql:host=localhost;dbname=dbcarro', 'root', '');
 			$this->PDO->setAttribute( \PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION );
 		}
 		

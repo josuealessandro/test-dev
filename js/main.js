@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+    //Filtro da barra de busca
     $('.search-panel .dropdown-menu').find('a').click(function (e) {
         e.preventDefault();
         var param = $(this).attr("href").replace("#", "");
@@ -6,6 +8,8 @@ $(document).ready(function () {
         $('.search-panel span#search_concept').text(concept);
         $('.input-group #search_param').val(param);
     });
+    
+    zeraCookie();
 });
 
 //Buscar
@@ -54,56 +58,63 @@ function BuscarCarro(chave_busca, filtro) {
 
             }
         };
-        //Envia a requisicao, buscando a palavra chave tanto no campo 'marca' quanto no campo 'modelo'
-        //Traz o resultado por ordem alfabetica da marca
-        xmlhttp.open("GET", "api.php/carros/search?marca=" + chave_busca + "&modelo=" + chave_busca + "&orderby=marca", true);
-        xmlhttp.send();
-        //var strURLBusca = "";
-        //var tipo = "";
-        //var order = "";
 
-        ////Processa os filtros de busca
-        //if (filtro !== "") {
-        //    strURLBusca = "search?";
-        //    var jsonFiltro = (filtro);
-        //    tipo = jsonFiltro.tipo.toLowerCase();
-        //    order = jsonFiltro.asc; //variavel booleana: true = asc / false = desc
-        //    if (order == "")
-        //        order = "true";
-        //}
-        //else if (getCookie("filtroTipo") !== "") {
-        //    strURLBusca = "search?";
-        //    tipo = getCookie("filtroTipo");
-        //    order = getCookie("asc"); //variavel booleana: true = asc / false = desc
-        //    if (order == "")
-        //        order = "true";
-        //}
+        //Tipo de requisição padrão
+        //xmlhttp.open("GET", "api.php/carros/search?marca=" + chave_busca + "&modelo=" + chave_busca + "&orderby=marca", true);
+        //xmlhttp.send();
 
-        //if (tipo !== "") {
-        //    switch (tipo) {
-        //        case "marca":
-        //            strURLBusca += "marca=" + chave_busca + "&orderby=marca&asc=" + order;
-        //            break;
-        //        case "modelo":
-        //            strURLBusca += "modelo=" + chave_busca + "&orderby=modelo&asc=" + order;
-        //            break;
-        //        case "ano":
-        //            strURLBusca += "ano=" + chave_busca + "&orderby=ano&asc=" + order;
-        //            break;
-        //        case "tudo":
-        //            strURLBusca += "marca=" + chave_busca + "&modelo=" + chave_busca + "&ano=" + chave_busca + "&orderby=" + order;
-        //            break;
-        //        default:
-        //            strURLBusca += "marca=" + chave_busca + "&modelo=" + chave_busca + "&ano=" + chave_busca + "&orderby=" + order;
-        //            break;
-        //    }
-        //}
-        //else {
-        //    strURLBusca = "";
-        //}
+        var strURLBusca = "";
+        var tipo = "";
+        var order = "";
+
+        //Filtra a busca pelo parâmetro informado
+        if (filtro !== "") {
+            strURLBusca = "search?";
+            tipo = filtro.tipo.toLowerCase();
+            order = filtro.asc; //variavel booleana: true = asc / false = desc
+            if (order == "")
+                order = "true";
+        }
+        //Filtra a busca pelos cookies
+        else if (getCookie("filtroTipo") !== "") {
+            strURLBusca = "search?";
+            tipo = getCookie("filtroTipo");
+            order = getCookie("asc"); //variavel booleana: true = asc / false = desc
+            if (order == "")
+                order = "true";
+        }
+
+        if (tipo !== "") {
+            switch (tipo) {
+                case "marca":
+                    strURLBusca += "marca=" + chave_busca + "&orderby=marca&asc=" + order;
+                    break;
+                case "modelo":
+                    strURLBusca += "modelo=" + chave_busca + "&orderby=modelo&asc=" + order;
+                    break;
+                case "ano":
+                    strURLBusca += "ano=" + chave_busca + "&orderby=ano&asc=" + order;
+                    break;
+                case "tudo":
+                    strURLBusca += "marca=" + chave_busca + "&modelo=" + chave_busca;
+                    if (isNumero(chave_busca))
+                        strURLBusca += "&ano=" + chave_busca;
+                    break;
+                default:
+                    strURLBusca += "marca=" + chave_busca + "&modelo=" + chave_busca;
+                    if (isNumero(chave_busca))
+                        strURLBusca += "&ano=" + chave_busca;
+                    break;
+            }
+        }
+        else {
+            strURLBusca = "search?marca=" + chave_busca + "&modelo=" + chave_busca;
+            if (isNumero(chave_busca))
+                strURLBusca += "&ano=" + chave_busca;
+        }
 
 
-        //Abre requisicao de busca
+        //Abre uma requisicao de busca
         if (strURLBusca !== "") {
             xmlhttp.open("GET", "api.php/carros/" + strURLBusca, true);
         }
@@ -111,7 +122,7 @@ function BuscarCarro(chave_busca, filtro) {
             xmlhttp.open("GET", "api.php/carros/", true);
         }
 
-        //Envia requisicao de busca
+        //Envia a requisicao de busca
         xmlhttp.send();
     }
 }
@@ -314,39 +325,40 @@ function LimparFiltro() {
     var chave_busca = "";
     BuscarCarro(chave_busca, "");
     document.getElementById("txtBusca").value = "";
+    document.getElementById("search_concept").innerHTML = "Filtros";
 }
 
-//function ProcessaFiltro(sender) {
+function ProcessaFiltro(sender) {
 
-//    //Pega o que esta na barra de busca
-//    var chave_busca = document.getElementById("txtBusca").value;
-//    var filtro = "";
+    //Pega o que esta na barra de busca
+    var chave_busca = document.getElementById("txtBusca").value;
+    var filtro = "";
 
-//    //Verifica qual o filtro escolhido e monta um json
-//    switch (sender.id) {
-//        case "filtroMarca":
-//            filtro = { "tipo": "marca", "asc": "true" };
-//            break;
-//        case "filtroModelo":
-//            filtro = { "tipo": "modelo", "asc": "true" };
-//            break;
-//        case "filtroAno":
-//            filtro = { "tipo": "ano", "asc": "true" };
-//            break;
-//        case "filtroTudo":
-//            filtro = { "tipo": "tudo", "asc": "true" };
-//            break;
-//        default:
-//            filtro = { "tipo": "tudo", "asc": "true" };
-//            break;
-//    }
+    //Verifica qual o filtro escolhido e monta um json
+    switch (sender.id) {
+        case "filtroMarca":
+            filtro = { "tipo": "marca", "asc": "true" };
+            break;
+        case "filtroModelo":
+            filtro = { "tipo": "modelo", "asc": "true" };
+            break;
+        case "filtroAno":
+            filtro = { "tipo": "ano", "asc": "true" };
+            break;
+        case "filtroTudo":
+            filtro = { "tipo": "tudo", "asc": "true" };
+            break;
+        default:
+            filtro = { "tipo": "tudo", "asc": "true" };
+            break;
+    }
 
-//    if (filtro !== "") {
-//        document.cookie = "filtroTipo=" + filtro.tipo;
-//        document.cookie = "filtroAsc=" + filtro.asc;
-//        BuscarCarro(chave_busca, filtro);
-//    }
-//}
+    if (filtro !== "") {
+        document.cookie = "filtroTipo=" + filtro.tipo;
+        document.cookie = "filtroAsc=" + filtro.asc;
+        BuscarCarro(chave_busca, filtro);
+    }
+}
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -362,5 +374,14 @@ function getCookie(cname) {
         }
     }
     return "";
+}
+
+function zeraCookie() {
+    document.cookie = "filtroTipo=";
+    document.cookie = "filtroAsc=";
+}
+
+function isNumero(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
 }
 //========================================================================
