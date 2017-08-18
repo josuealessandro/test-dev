@@ -1,36 +1,99 @@
-API docs
-==============================
+ <meta charset="UTF-8">
+API docs<br />
+==============================<br /><br />
 
-Recurso 										| DescriÁ„o                   						| RequisiÁ„o | Exemplo
-====================================================================================================================================================
-/carros 										| Lista completa de registros 						| GET        | api.php/carros
-/carros/search?{filtro} 						| Lista os registros utilizando filtros 			| GET 		 | api.php/carros/search?marca=fiat
-/carros/search?{filtro}&{filtro}				| Lista os registros utilizando v·rios filtros  	| GET 		 | api.php/carros/search?marca=fiat&modelo=palio&ano=2017
-/carros/search?{filtro}&conector=:conector		| Configura o conector de busca: OR ou AND			| GET		 | api.php/carros/search?marca=fiat&modelo=fiat&conector=OR
-/carros/search?{filtro}&orderby=:campo			| Ordena a busca pelo campo especificado			| GET		 | api.php/carros/search?marca=fiat&orderby=marca
-/carros/search?{filtro}&{orderby}&asc=:vallor	| Ordena a busca de forma ascendente ou descendente	| GET		 | api.php/carros/search?marca=fiat&orderby=marca&asc=true
-/carros/id=:id									| Deleta um registro								| DELETE	 | api.php/carros/id=1
-/carros/id=:id									| Altera um registro								| PUT		 | api.php/carros/id=2
-/carros/id=:id									| Adiciona um registro								| POST		 | api.php/carros/
-====================================================================================================================================================
-
-Filtros DisponÌveis: 
-	search?marca=:marca
-	search?modelo=:modelo
-	search?ano={[ano]-[ano]}
-		Ano especÌfico: ano=1999
-		Faixa de ano: ano=1999-2013
-	search?{filtro}&conector=:conector
-		Conector do tipo AND: conector=AND 
-		Conector do tipo OR: conector=OR
-	search?{filtro}&{orderby}&asc=:valor
-		OrdenaÁ„o ascendente: asc=true
-		OrdenaÁ„o descendente: asc=false
-
-AlteraÁ„o:
-	Passar JSON no body da requisiÁ„o
-	Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}
-
-AdiÁ„o:
-	Passar JSON no body da requisiÁ„o
-	Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}
+<table>
+<tr>
+	<td>Requisi√ß√£o</td>
+	<td>Descri√ß√£o</td>
+	<td>Tipo</td>
+	<td>Exemplo</td>
+</tr>
+<tr>
+	<td><code>/carros</code></td> 
+	<td>Lista completa de registros </td>
+	<td>[GET]</td>
+	<td>api.php/carros</td>
+</tr>
+<tr>
+	<td><code>/carros/search?{filtro}</code></td>
+	<td>Lista os registros utilizando filtros </td>
+	<td>[GET]</td>
+	<td>api.php/carros/search?marca=fiat</td>
+</tr>
+<tr>
+	<td><code>/carros/search?{filtro}&{filtro}</code></td>
+	<td>Lista os registros utilizando v√°rios filtros</td>
+	<td>[GET]</td>
+	<td>api.php/carros/search?marca=fiat&modelo=palio&ano=2017</td>
+</tr>
+<tr>
+	<td><code>/carros/search?{filtro}&conector=:conector</code></td>
+	<td>Configura o conector de busca: OR ou AND	</td>
+	<td>[GET]</td>
+	<td>api.php/carros/search?marca=fiat&modelo=fiat&conector=OR</td>
+</tr>
+<tr>
+	<td><code>/carros/search?{filtro}&orderby=:campo</code></td>
+	<td>Ordena a busca pelo campo especificado</td>
+	<td>[GET]</td>
+	<td>api.php/carros/search?marca=fiat&orderby=marca</td>
+</tr>
+<tr>
+	<td><code>/carros/search?{filtro}&{orderby}&asc=:valor</code></td>
+	<td> Ordena a busca de forma ascendente ou descendente</td>
+	<td>[GET]</td>
+	<td>api.php/carros/search?marca=fiat&orderby=marca&asc=true</td>
+</tr>
+<tr>
+	<td><code>/carros/id=:id</code>	</td>
+	<td>Deleta um registro	</td>
+	<td>[DELETE]</td>
+	<td>api.php/carros/id=1</td>
+</tr>
+<tr>
+	<td><code>/carros/id=:id</code></td>
+	<td>Altera um registro</td>
+	<td>[PUT]</td>
+	<td>api.php/carros/id=2</td>
+</tr>
+<tr>
+	<td><code>/carros/id=:id</code></td>
+	<td>Adiciona um registro</td>
+	<td>[POST]</td>
+	<td>api.php/carros/</td>
+</tr>
+</table>
+<ul>
+<b>Filtros Dispon√≠veis:</b>
+<code>
+<li>search?marca=:marca</li>
+<li>search?modelo=:modelo</li>
+<li>search?ano={[ano]-[ano]}</li>
+<blockquote>
+	Ano espec√≠fico: ano=1999
+	
+Faixa de ano: ano=1999-2013
+</blockquote>
+<li>search?{filtro}&conector=:conector</li>
+<blockquote>
+	Conector do tipo AND: conector=AND
+	
+Conector do tipo OR: conector=OR
+</blockquote>	
+<li>search?{filtro}&{orderby}&asc=:valor</li>
+<blockquote>
+	Ordena√ß√£o ascendente: asc=true
+	
+Ordena√ß√£o descendente: asc=false
+</blockquote></code>
+<b>Altera√ß√£o:</b>
+<code>
+<li>Passar JSON no body da requisi√ß√£o</li>
+<li>Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}</li></code>
+<b>Adi√ß√£o:<b/>
+<code>
+<li>Passar JSON no body da requisi√ß√£o</li>
+<li>Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}</li>
+</code>
+</ul>
