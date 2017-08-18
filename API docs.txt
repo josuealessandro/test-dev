@@ -1,0 +1,36 @@
+API docs
+==============================
+
+Recurso 										| Descrição                   						| Requisição | Exemplo
+====================================================================================================================================================
+/carros 										| Lista completa de registros 						| GET        | api.php/carros
+/carros/search?{filtro} 						| Lista os registros utilizando filtros 			| GET 		 | api.php/carros/search?marca=fiat
+/carros/search?{filtro}&{filtro}				| Lista os registros utilizando vários filtros  	| GET 		 | api.php/carros/search?marca=fiat&modelo=palio&ano=2017
+/carros/search?{filtro}&conector=:conector		| Configura o conector de busca: OR ou AND			| GET		 | api.php/carros/search?marca=fiat&modelo=fiat&conector=OR
+/carros/search?{filtro}&orderby=:campo			| Ordena a busca pelo campo especificado			| GET		 | api.php/carros/search?marca=fiat&orderby=marca
+/carros/search?{filtro}&{orderby}&asc=:vallor	| Ordena a busca de forma ascendente ou descendente	| GET		 | api.php/carros/search?marca=fiat&orderby=marca&asc=true
+/carros/id=:id									| Deleta um registro								| DELETE	 | api.php/carros/id=1
+/carros/id=:id									| Altera um registro								| PUT		 | api.php/carros/id=2
+/carros/id=:id									| Adiciona um registro								| POST		 | api.php/carros/
+====================================================================================================================================================
+
+Filtros Disponíveis: 
+	search?marca=:marca
+	search?modelo=:modelo
+	search?ano={[ano]-[ano]}
+		Ano específico: ano=1999
+		Faixa de ano: ano=1999-2013
+	search?{filtro}&conector=:conector
+		Conector do tipo AND: conector=AND 
+		Conector do tipo OR: conector=OR
+	search?{filtro}&{orderby}&asc=:valor
+		Ordenação ascendente: asc=true
+		Ordenação descendente: asc=false
+
+Alteração:
+	Passar JSON no body da requisição
+	Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}
+
+Adição:
+	Passar JSON no body da requisição
+	Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}
