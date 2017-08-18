@@ -47,8 +47,10 @@ function BuscarCarro(chave_busca, filtro) {
                             + '<td>' + item.NOME_MARCA + '</td>'
                             + '<td>' + item.NOME_MODELO + '</td>'
                             + '<td>' + item.ANO + '</td>'
-                            + '<td style="text-align: right;"><input id="btnEditar_' + item.ID_CARRO + '" value="Editar" onclick="EditarCarro(this)" class="js_input btn btn-outline-info" type="button" /></td>'
-                            + '<td style="text-align: left;"><input id="btnExcluir_' + item.ID_CARRO + '" value="Excluir" onclick="ExcluirCarro(this)" class="js_input btn btn-outline-danger" type="button" /></td>'
+                            + '<td class="btnAcao">'
+                            +   '<input id= "btnEditar_' + item.ID_CARRO + '" value= "Editar" onclick= "EditarCarro(this)" class="js_input btn btn-outline-info" type= "button" />'
+                            +   '<input id="btnExcluir_' + item.ID_CARRO + '" value="Excluir" onclick="ExcluirCarro(this)" class="js_input btn btn-outline-danger" type="button" />'
+                            + '</td >'
                             + '</tr>'
                     });
                 } else {
@@ -284,7 +286,8 @@ function AdicionarCampo(sender) {
 }
 
 function AdicionarCarro(sender) {
-    if (sender == "") {
+    var item = sender.parentNode;
+    if (item.children[0].value == "" || item.children[1].value == "" || item.children[2].value == "" || !isNumero(item.children[2].value)) {
         return;
     } else {
         if (window.XMLHttpRequest) {

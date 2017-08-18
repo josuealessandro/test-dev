@@ -45,10 +45,11 @@ body {
 
 .js-add_div {
     padding: 10px;
-    background-color: #ffffffb3;
+    background-color: rgba(255, 255, 255, 0.8);
     margin-bottom: 5px;
     border-radius: 10px;
 }
+
     .js-add_div input {
         margin: 2px;
     }
@@ -103,6 +104,8 @@ body {
 .input-group {
     display: ruby;
     white-space: pre-line;
+    max-height: 50px;
+    align-items: center;
 }
 
 #divAdicionarCampo {
@@ -117,11 +120,21 @@ body {
     margin: 30px auto 30px auto;
     z-index: 99999;
     /*position: absolute;*/
-    
     text-align: center;
 }
 
-@media (max-width: 544px){
+.dropdown-toggle {
+    height: 100%;
+}
+
+#coneudoResultado input {
+    margin-bottom: 0px;
+    margin-right: 5px;
+}
+.btnAcao{
+    width: 300px !important;
+}
+@media (max-width: 544px) {
     #divAdicionarCampo {
         margin: 10px 0px 0px 0px !important;
     }
@@ -131,15 +144,24 @@ body {
     }
 
     .js-add_div {
-        
     }
 
     .container {
         margin: 0px !important;
         padding: 0px !important;
     }
+}
+
+@media (max-width: 770px) {
+    #divResultado input {
+        margin: 0px;
+    }
+
+    #coneudoResultado input {
+        margin-bottom: 5px;
+    }
 
 }
-@media (max-width: 767px){
+@media (max-width: 400px){
 
 }
