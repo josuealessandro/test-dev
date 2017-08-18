@@ -8,8 +8,10 @@ $(document).ready(function () {
         $('.search-panel span#search_concept').text(concept);
         $('.input-group #search_param').val(param);
     });
-    
-    zeraCookie();
+    $(".container").hide();
+
+    $(".container").fadeIn(1000);
+
 });
 
 //Buscar
@@ -45,8 +47,8 @@ function BuscarCarro(chave_busca, filtro) {
                             + '<td>' + item.NOME_MARCA + '</td>'
                             + '<td>' + item.NOME_MODELO + '</td>'
                             + '<td>' + item.ANO + '</td>'
-                            + '<td style="text-align: right;"><input id="btnExcluir_' + item.ID_CARRO + '" value="Excluir" onclick="ExcluirCarro(this)" class="js_input btn btn-outline-danger" type="button" /></td>'
-                            + '<td style="text-align: left;"><input id="btnEditar_' + item.ID_CARRO + '" value="Editar" onclick="EditarCarro(this)" class="js_input btn btn-outline-info" type="button" /></td>'
+                            + '<td style="text-align: right;"><input id="btnEditar_' + item.ID_CARRO + '" value="Editar" onclick="EditarCarro(this)" class="js_input btn btn-outline-info" type="button" /></td>'
+                            + '<td style="text-align: left;"><input id="btnExcluir_' + item.ID_CARRO + '" value="Excluir" onclick="ExcluirCarro(this)" class="js_input btn btn-outline-danger" type="button" /></td>'
                             + '</tr>'
                     });
                 } else {
@@ -59,9 +61,12 @@ function BuscarCarro(chave_busca, filtro) {
             }
         };
 
-        //Tipo de requisição padrão
+        //Tipo de requisição simples
+        //==============================
         //xmlhttp.open("GET", "api.php/carros/search?marca=" + chave_busca + "&modelo=" + chave_busca + "&orderby=marca", true);
         //xmlhttp.send();
+        //==============================
+
 
         var strURLBusca = "";
         var tipo = "";
@@ -84,6 +89,7 @@ function BuscarCarro(chave_busca, filtro) {
                 order = "true";
         }
 
+        //Determina o tipo da busca
         if (tipo !== "") {
             switch (tipo) {
                 case "marca":
@@ -236,19 +242,19 @@ function AdicionarCampo(sender) {
 
     var inputMarca = document.createElement('input');
     inputMarca.type = "text";
-    inputMarca.placeholder = "Digite a Marca";
+    inputMarca.placeholder = "Marca";
     inputMarca.className = "js-add_input form-control";
     divPai.appendChild(inputMarca);
 
     var inputModelo = document.createElement('input');
     inputModelo.type = "text";
-    inputModelo.placeholder = "Digite o Modelo";
+    inputModelo.placeholder = "Modelo";
     inputModelo.className = "js-add_input form-control";
     divPai.appendChild(inputModelo);
 
     var inputAno = document.createElement('input');
     inputAno.type = "text";
-    inputAno.placeholder = "Digite o Ano";
+    inputAno.placeholder = "Ano";
     inputAno.className = "js-add_input form-control";
     divPai.appendChild(inputAno);
 
@@ -274,6 +280,7 @@ function AdicionarCampo(sender) {
 
     var quebraLinha = document.createElement('br');
     divPai.appendChild(quebraLinha);
+    
 }
 
 function AdicionarCarro(sender) {
