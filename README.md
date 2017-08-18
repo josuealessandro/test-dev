@@ -65,32 +65,35 @@ API docs<br />
 </tr>
 </table>
 <ul>
-	<b>Filtros Disponíveis:</b>
-	<code>
-		<li>search?marca=:marca</li>
-		<li>search?modelo=:modelo</li>
-		<li>search?ano={[ano]-[ano]}</li>
-		<blockquote>
-			Ano específico: ano=1999<br />
-			Faixa de ano: ano=1999-2013<br />
-		</blockquote>
-		<li>search?{filtro}&conector=:conector</li>
-		<blockquote>
-			Conector do tipo AND: conector=AND <br />
-			Conector do tipo OR: conector=OR<br />
-		</blockquote>	
-		<li>search?{filtro}&{orderby}&asc=:valor</li>
-		<blockquote>
-			Ordenação ascendente: asc=true<br />
-			Ordenação descendente: asc=false<br />
-		</blockquote></code>
-		<b>Alteração:</b>
-		<code>
-		<li>Passar JSON no body da requisição</li>
-		<li>Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}</li></code>
-		<b>Adição:<b/>
-		<code>
-		<li>Passar JSON no body da requisição</li>
-		<li>Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}</li>
-	</code>
+<b>Filtros Disponíveis:</b>
+<code>
+<li>search?marca=:marca</li>
+<li>search?modelo=:modelo</li>
+<li>search?ano={[ano]-[ano]}</li>
+<blockquote>
+	Ano específico: ano=1999
+	
+Faixa de ano: ano=1999-2013
+</blockquote>
+<li>search?{filtro}&conector=:conector</li>
+<blockquote>
+	Conector do tipo AND: conector=AND
+	
+Conector do tipo OR: conector=OR
+</blockquote>	
+<li>search?{filtro}&{orderby}&asc=:valor</li>
+<blockquote>
+	Ordenação ascendente: asc=true
+	
+Ordenação descendente: asc=false
+</blockquote></code>
+<b>Alteração:</b>
+<code>
+<li>Passar JSON no body da requisição</li>
+<li>Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}</li></code>
+<b>Adição:<b/>
+<code>
+<li>Passar JSON no body da requisição</li>
+<li>Exemplo: {"NOME_MARCA":"VALOR","NOME_MODELO":"VALOR","ANO":"VALOR"}</li>
+</code>
 </ul>
